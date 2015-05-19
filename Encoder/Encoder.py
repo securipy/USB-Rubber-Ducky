@@ -220,7 +220,7 @@ Script Commands:
 
 	def __read_file(self):
 		#Instrution dic
-		instruntions_dic = {"WINDOWS","GUI","CONTROL","CTRL","ALT","SHIFT","CTRL-ALT","CTRL-SHIFT","COMMAND-OPTION","ALT-SHIFT","ALT-TAB","DELAY","DEFAULT-DELAY","DEFAULTDELAY","DEFAULT_DELAY","ENTER","REPEAT","REM","STRING"}
+		instruntions_dic = {"WINDOWS","GUI","CONTROL","CTRL","ALT","SHIFT","CTRL-ALT","CTRL-SHIFT","COMMAND-OPTION","ALT-SHIFT","ALT-TAB","DELAY","DEFAULT-DELAY","DEFAULTDELAY","DEFAULT_DELAY","ENTER","REPEAT","REM","STRING","ESCAPE","DEL","BREAK","DOWNARROW","UPARROW","LEFTARROW","RIGHTARROW","MENU","PLAY","PAUSE","STOP","MUTE","VULUMEUP","VOLUMEDOWN","SCROLLLOCK","NUMLOCK","CAPSLOCK"}
 		# Check if the input file exists and if we can open it in read mode
 		if os.path.isfile(self.inputFile):
 			try:

@@ -239,7 +239,7 @@ Script Commands:
 			if line != '\n':
 				# Ignore the comments
 				if '//'  not in line:
-
+					# Check if the command has any arguments
 					if " " in line:
 						current_ins = line.strip().split(None, 1)
 						if current_ins[0] not in instruntions_dic:
@@ -247,7 +247,8 @@ Script Commands:
 							continue
 					else:
 						if line.strip() in instruntions_dic:
-							instructions.append([line.strip(), None])
+							current_ins = [line.strip(), None]
+							#instructions.append(current_ins)
 						else:
 							print "Instrution not found "+line.strip()
 							continue
@@ -264,13 +265,11 @@ Script Commands:
 					elif current_ins[0] == "DEFAULT_DELAY" or current_ins[0] == "DEFAULTDELAY" or current_ins[0] == "DEFAULT-DELAY":
 						delay = int(current_ins[1])
 					else:
-						#instructions.append(current_ins)
+						instructions.append(current_ins)
 						if delay != -1:
 							instructions.append(["DELAY", delay])
-						instructions.append(current_ins)
 						# Keep the previous instruction in case we need to repeat it
 						last_ins = current_ins
-
 		if delay != -1:
 			instructions.pop()
 

@@ -252,7 +252,6 @@ Script Commands:
 							print "Instrution not found "+line.strip()
 							continue
 
-
 					if current_ins[0] == "REPEAT":
 						for i in range(current_ins[1]):
 							if last_ins != "":
@@ -367,5 +366,5 @@ Script Commands:
 
 
 if __name__ == "__main__":
-	p = Pato()
+	p = Encoder()
 	p.compile(sys.argv)

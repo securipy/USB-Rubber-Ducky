@@ -18,7 +18,7 @@ __status__ 		= "Development"
 class Encoder:
 
 	def __init__(self, debug=False):
-		self.version = 0.1
+		self.version = 0.1.1
 		self.debug = debug
 		self.bocabits = bytearray()
 		self.inputFile = ""
@@ -30,7 +30,7 @@ class Encoder:
 Arguments:
    -i [file ..] 		Input File
    -o [file ..] 		Output File
-   -l [file ..] 		Keyboard Layout (us/es/it/pt/no/ru/gb ...)
+   -l [language ..] 		Keyboard Layout (us/es/it/pt/no/ru/gb ...)
 
 Script Commands:
    ALT [key name] (ex: ALT F4, ALT SPACE)

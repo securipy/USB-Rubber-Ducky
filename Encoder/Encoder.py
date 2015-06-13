@@ -6,10 +6,11 @@
 import sys
 import os.path
 import pprint
+import codecs
 
 __author__ 		= "GoldraK & Roger Serentill"
 __credits__ 	= "GoldraK & Roger Serentill"
-__version__ 	= "0.1"
+__version__ 	= "0.1.1"
 __maintainer__ 	= "GoldraK & Roger Serentill"
 __email__ 		= "goldrak@gmail.com, hello@rogerserentill.com"
 __status__ 		= "Development"
@@ -224,7 +225,10 @@ Script Commands:
 		# Check if the input file exists and if we can open it in read mode
 		if os.path.isfile(self.inputFile):
 			try:
-				file_read = open(self.inputFile, 'r')
+				if self.keyboardLayout == "es":
+					file_read = codecs.open(self.inputFile, 'r', 'utf-8')
+				else:
+					file_read = open(self.inputFile, 'r')
 			except IOError:
 				print 'ERROR: Cannot open', inputFile
 				sys.exit(-1)

@@ -18,7 +18,7 @@ __status__ 		= "Development"
 class Encoder:
 
 	def __init__(self, debug=False):
-		self.version = 0.1.1
+		self.version = "0.1.1"
 		self.debug = debug
 		self.bocabits = bytearray()
 		self.inputFile = ""
@@ -316,10 +316,9 @@ Script Commands:
 							temp_list[0] = temp_list[0].strip()
 							if ',' in temp_list[1]:
 								temp_list[1] = temp_list[1].split(',')
-								temp_list[1][0] = props_def[temp_list[1][0].strip()]
-								temp_list[1][1] = props_def[temp_list[1][1].strip()]
-								if len(temp_list[1]) == 3:
-									temp_list[1][2] = props_def[temp_list[1][2].strip()]
+
+								for i in range(len(temp_list[1])):
+									temp_list[1][i] = props_def[temp_list[1][i].strip()]
 							else:
 								temp_list[1] = props_def[temp_list[1].strip()]
 							props_lang.update(dict(zip(temp_list[0::2], temp_list[1::2])))
@@ -363,10 +362,6 @@ Script Commands:
 		return self.props[st];
 
 	def __addByte(self,st_list):
-		# In spanish keyboard we need to type two times ^ to actually insert it
-		if st_list == [47, '0x02'] and self.keyboardLayout == "es":
-			self.bocabits.append(47)
-			self.bocabits.append(2)
 		for st in st_list:
 			if st[:2] == '0x':
 				self.bocabits += self.bocabits.fromhex(st[2:])

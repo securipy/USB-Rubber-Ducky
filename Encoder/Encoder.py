@@ -284,8 +284,9 @@ Script Commands:
 	def __loadProperties(self, lang):
 		props_def = {}
 		props_lang = {}
-		file_props_def = 'resources/keyboard.properties'
-		file_props_lng = 'resources/'+lang+'.properties'
+		path = os.path.dirname(__file__)
+		file_props_def = path+'resources/keyboard.properties'
+		file_props_lng = path+'resources/'+lang+'.properties'
 
 		# Check if the default properties file exists and if we can open it in read mode
 		if os.path.isfile(file_props_def):

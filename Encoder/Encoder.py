@@ -285,6 +285,8 @@ Script Commands:
 		props_def = {}
 		props_lang = {}
 		path = os.path.dirname(__file__)
+		if path:
+			path = path+"/"
 		file_props_def = path+'resources/keyboard.properties'
 		file_props_lng = path+'resources/'+lang+'.properties'
 

@@ -1,2 +1,2 @@
-Encoder/input.txt
-Encoder/inject.bin
+Encoder/*.txt
+Encoder/*.bin

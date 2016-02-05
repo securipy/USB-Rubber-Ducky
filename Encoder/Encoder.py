@@ -10,7 +10,7 @@ import codecs
 
 __author__ 		= "GoldraK & Roger Serentill"
 __credits__ 	= "GoldraK & Roger Serentill"
-__version__ 	= "0.1.1"
+__version__ 	= "0.1.3"
 __maintainer__ 	= "GoldraK & Roger Serentill"
 __email__ 		= "goldrak@gmail.com, hello@rogerserentill.com"
 __status__ 		= "Development"

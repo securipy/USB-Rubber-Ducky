@@ -58,130 +58,132 @@ Script Commands:
 		# Let the games begin. Reading the input file and handling each instruction (line by line)
 		for (command, arg) in instructions:
 
-			# Delay command
-			if command == 'DELAY':
-				delay = int(arg)
-				while delay > 0:
-					self.__addByte(['0',]);
-					if delay > 255:
-						self.__addByte(['255',]);
-						delay = delay - 255;
+			if command != 'REM':
+
+				# Delay command
+				if command == 'DELAY':
+					delay = int(arg)
+					while delay > 0:
+						self.__addByte(['0',]);
+						if delay > 255:
+							self.__addByte(['255',]);
+							delay = delay - 255;
+						else:
+							self.__addByte([str(delay),]);
+							delay = 0;
+
+				# GUI or Windows key
+				elif command == 'WINDOWS' or command == 'GUI':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						self.__addByte([self.props["MODIFIERKEY_LEFT_GUI"],])
 					else:
-						self.__addByte([str(delay),]);
-						delay = 0;
-
-			# GUI or Windows key
-			elif command == 'WINDOWS' or command == 'GUI':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					self.__addByte([self.props["MODIFIERKEY_LEFT_GUI"],])
-				else:
-					self.__addByte([self.props["MODIFIERKEY_LEFT_GUI"],])						
-					self.__addByte(['0',])
-
-			# CTRL key
-			elif command == 'CONTROL' or command == 'CTRL':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					self.__addByte([self.props["MODIFIERKEY_CTRL"],])
-				else:
-					self.__addByte([self.props["KEY_LEFT_CTRL"],])						
-					self.__addByte(['0',])
-
-			# ALT key
-			elif command == 'ALT':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					self.__addByte([self.props["MODIFIERKEY_ALT"],])
-				else:
-					self.__addByte([self.props["KEY_LEFT_ALT"],])						
-					self.__addByte(['0',])
-
-			# SHIFT key
-			elif command == 'SHIFT':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					self.__addByte([self.props["MODIFIERKEY_SHIFT"],])
-				else:
-					self.__addByte([self.props["KEY_LEFT_SHIFT"],])						
-					self.__addByte(['0',])
-
-			# CTRL-ALT keys combination
-			elif command == 'CTRL-ALT':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					# Add values from each key to get the resultant byte
-					bytectrlalt = hex((int(self.props["MODIFIERKEY_CTRL"], 16)) + (int(self.props["MODIFIERKEY_ALT"], 16)))
-					# Format the resultant value to 0xHH
-					bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
-					self.__addByte([bytectrlalt,])
-
-			# CTRL-SHIFT keys combination
-			elif command == 'CTRL-SHIFT':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					# Add values from each key to get the resultant byte
-					bytectrlalt = hex((int(self.props["MODIFIERKEY_CTRL"], 16)) + (int(self.props["MODIFIERKEY_SHIFT"], 16)))
-					# Format the resultant value to 0xHH
-					bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
-					self.__addByte([bytectrlalt,])
-
-			# COMMAND-OPTION keys combination (Mac OS)
-			elif command == 'COMMAND-OPTION':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					# Add values from each key to get the resultant byte
-					bytectrlalt = hex((int(self.props["MODIFIERKEY_LEFT_GUI"], 16)) + (int(self.props["MODIFIERKEY_ALT"], 16)))
-					# Format the resultant value to 0xHH
-					bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
-					self.__addByte([bytectrlalt,])
-
-			# ALT-SHIFT keys combination
-			elif command == 'ALT-SHIFT':
-				if arg:
-					# Add the instruction argument(s) as byte(s)
-					self.__addByte([self.__strInstrToByte(arg),])
-					# Add values from each key to get the resultant byte
-					bytectrlalt = hex((int(self.props["MODIFIERKEY_LEFT_ALT"], 16)) + (int(self.props["MODIFIERKEY_SHIFT"], 16)))
-					# Format the resultant value to 0xHH
-					bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
-					self.__addByte([bytectrlalt,])
-				else:
-					# Add the instruction ALT
-					self.__addByte([self.props["KEY_LEFT_ALT"],])
-					# Add values from each key to get the resultant byte
-					bytectrlalt = hex((int(self.props["MODIFIERKEY_LEFT_ALT"], 16)) + (int(self.props["MODIFIERKEY_SHIFT"], 16)))
-					# Format the resultant value to 0xHH
-					bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
-					self.__addByte([bytectrlalt,])
-
-			# ALT-TAB keys combination
-			elif command == 'ALT-TAB':
-				if command and not arg:
-					self.__addByte([self.props["KEY_TAB"],])
-					self.__addByte([self.props["MODIFIERKEY_LEFT_ALT"],])
-					self.__addByte([bytectrlalt,])
-
-
-			# STRING instruction
-			elif command == 'STRING':
-				for c in arg:
-					data_string = self.__charToByte(c)
-					if type(data_string) is list:
-						self.__addByte(data_string)
-					else:
-						self.__addByte([self.__charToByte(c),])
+						self.__addByte([self.props["MODIFIERKEY_LEFT_GUI"],])
 						self.__addByte(['0',])
-			else:
-				self.__addByte([self.__strInstrToByte(command),])
-				self.__addByte(['0',])
+
+				# CTRL key
+				elif command == 'CONTROL' or command == 'CTRL':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						self.__addByte([self.props["MODIFIERKEY_CTRL"],])
+					else:
+						self.__addByte([self.props["KEY_LEFT_CTRL"],])
+						self.__addByte(['0',])
+
+				# ALT key
+				elif command == 'ALT':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						self.__addByte([self.props["MODIFIERKEY_ALT"],])
+					else:
+						self.__addByte([self.props["KEY_LEFT_ALT"],])
+						self.__addByte(['0',])
+
+				# SHIFT key
+				elif command == 'SHIFT':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						self.__addByte([self.props["MODIFIERKEY_SHIFT"],])
+					else:
+						self.__addByte([self.props["KEY_LEFT_SHIFT"],])
+						self.__addByte(['0',])
+
+				# CTRL-ALT keys combination
+				elif command == 'CTRL-ALT':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						# Add values from each key to get the resultant byte
+						bytectrlalt = hex((int(self.props["MODIFIERKEY_CTRL"], 16)) + (int(self.props["MODIFIERKEY_ALT"], 16)))
+						# Format the resultant value to 0xHH
+						bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
+						self.__addByte([bytectrlalt,])
+
+				# CTRL-SHIFT keys combination
+				elif command == 'CTRL-SHIFT':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						# Add values from each key to get the resultant byte
+						bytectrlalt = hex((int(self.props["MODIFIERKEY_CTRL"], 16)) + (int(self.props["MODIFIERKEY_SHIFT"], 16)))
+						# Format the resultant value to 0xHH
+						bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
+						self.__addByte([bytectrlalt,])
+
+				# COMMAND-OPTION keys combination (Mac OS)
+				elif command == 'COMMAND-OPTION':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						# Add values from each key to get the resultant byte
+						bytectrlalt = hex((int(self.props["MODIFIERKEY_LEFT_GUI"], 16)) + (int(self.props["MODIFIERKEY_ALT"], 16)))
+						# Format the resultant value to 0xHH
+						bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
+						self.__addByte([bytectrlalt,])
+
+				# ALT-SHIFT keys combination
+				elif command == 'ALT-SHIFT':
+					if arg:
+						# Add the instruction argument(s) as byte(s)
+						self.__addByte([self.__strInstrToByte(arg),])
+						# Add values from each key to get the resultant byte
+						bytectrlalt = hex((int(self.props["MODIFIERKEY_LEFT_ALT"], 16)) + (int(self.props["MODIFIERKEY_SHIFT"], 16)))
+						# Format the resultant value to 0xHH
+						bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
+						self.__addByte([bytectrlalt,])
+					else:
+						# Add the instruction ALT
+						self.__addByte([self.props["KEY_LEFT_ALT"],])
+						# Add values from each key to get the resultant byte
+						bytectrlalt = hex((int(self.props["MODIFIERKEY_LEFT_ALT"], 16)) + (int(self.props["MODIFIERKEY_SHIFT"], 16)))
+						# Format the resultant value to 0xHH
+						bytectrlalt = ("0x{:02x}".format(int(bytectrlalt, 16)))
+						self.__addByte([bytectrlalt,])
+
+				# ALT-TAB keys combination
+				elif command == 'ALT-TAB':
+					if command and not arg:
+						self.__addByte([self.props["KEY_TAB"],])
+						self.__addByte([self.props["MODIFIERKEY_LEFT_ALT"],])
+						self.__addByte([bytectrlalt,])
+
+
+				# STRING instruction
+				elif command == 'STRING':
+					for c in arg:
+						data_string = self.__charToByte(c)
+						if type(data_string) is list:
+							self.__addByte(data_string)
+						else:
+							self.__addByte([self.__charToByte(c),])
+							self.__addByte(['0',])
+				else:
+					self.__addByte([self.__strInstrToByte(command),])
+					self.__addByte(['0',])
 
 
 		f = open(self.outputFile, 'wb')
@@ -232,7 +234,7 @@ Script Commands:
 			except IOError:
 				print 'ERROR: Cannot open', inputFile
 				sys.exit(-1)
-		else:	
+		else:
 			print "ERROR: The given input file ", self.inputFile, " doesn't exist!"
 			sys.exit(-1)
 
@@ -299,7 +301,7 @@ Script Commands:
 						if line[:2] != '//':
 							temp_list = line.split("=")
 							temp_list[0] = temp_list[0].strip()
-							temp_list[1] = temp_list[1].strip() 
+							temp_list[1] = temp_list[1].strip()
 							props_def.update(dict(zip(temp_list[0::2], temp_list[1::2])))
 			except IOError:
 				print 'ERROR: Cannot open', file_props_def
